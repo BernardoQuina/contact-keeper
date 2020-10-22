@@ -43,4 +43,4 @@ ContactItem.propTypes = {
   contact: PropTypes.object.isRequired
 }
 
-export default ContactItem
+export default ContactItem;
