@@ -2,9 +2,11 @@
 import {
   ADD_CONTACT,
   DELETE_CONTACT,
+  DELETE_FILTERED,
   SET_CURRENT,
   CLEAR_CURRENT,
   UPDATE_CONTACT,
+  UPDATE_FILTERED,
   FILTER_CONTACTS,
   CLEAR_FILTER
 } from '../types';
@@ -23,6 +25,14 @@ export default (state, action) => {
         contacts: state.contacts.filter(contact => contact.id !== action.payload)
       };
 
+    case DELETE_FILTERED:
+      return {
+        ...state,
+        filtered: state.filtered.filter((contact) =>
+          contact.id !== action.payload
+        )
+      }
+
     case SET_CURRENT:
       return {
         ...state,
@@ -38,7 +48,32 @@ export default (state, action) => {
     case UPDATE_CONTACT:
       return {
         ...state,
-        contacts: state.contacts.map(contact => contact.id === action.payload.id ? action.payload : contact)
+        contacts: state.contacts.map((contact) =>
+          contact.id === action.payload.id ? action.payload : contact
+        )
+      };
+
+    case UPDATE_FILTERED:
+      return {
+        ...state,
+        filtered: state.filtered.map((contact) =>
+          contact.id === action.payload.id ? action.payload : contact
+        )
+      }
+    
+    case FILTER_CONTACTS:
+      return {
+        ...state,
+        filtered: state.contacts.filter(contact => {
+          const regex = new RegExp(`${action.payload}`, 'gi');
+          return contact.name.match(regex) || contact.email.match(regex);
+        })
+      };
+
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null
       }
 
     default:
