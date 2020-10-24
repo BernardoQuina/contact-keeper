@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 import {
-
+  REGISTER_SUCCESS
 } from '../types';
 
 const AuthState = props => {
@@ -46,4 +46,4 @@ const AuthState = props => {
   )
 };
 
-export default AuthContext;
+export default AuthState;
