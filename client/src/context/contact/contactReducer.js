@@ -9,21 +9,32 @@ import {
   UPDATE_FILTERED,
   FILTER_CONTACTS,
   CLEAR_FILTER,
-  CONTACT_ERROR
+  CLEAR_CONTACTS,
+  CONTACT_ERROR,
+  GET_CONTACTS
 } from '../types';
 
 export default (state, action) => {
   switch(action.type) {
+    case GET_CONTACTS:
+      return {
+        ...state,
+        contacts: action.payload,
+        loading: false
+      }
+
     case ADD_CONTACT:
       return {
         ...state,
-        contacts: [...state.contacts, action.payload]
+        contacts: [...state.contacts, action.payload],
+        loading: false
       };
 
     case DELETE_CONTACT:
       return {
         ...state,
-        contacts: state.contacts.filter(contact => contact.id !== action.payload)
+        contacts: state.contacts.filter(contact => contact.id !== action.payload),
+        loading: false
       };
 
     case DELETE_FILTERED:
@@ -31,7 +42,17 @@ export default (state, action) => {
         ...state,
         filtered: state.filtered.filter((contact) =>
           contact.id !== action.payload
-        )
+        ),
+        loading: false
+      };
+
+    case CLEAR_CONTACTS:
+      return {
+        ...state,
+        contacts: null,
+        filtered: null,
+        error: null,
+        current: null
       }
 
     case SET_CURRENT:
@@ -51,7 +72,8 @@ export default (state, action) => {
         ...state,
         contacts: state.contacts.map((contact) =>
           contact.id === action.payload.id ? action.payload : contact
-        )
+        ),
+        loading: false
       };
 
     case UPDATE_FILTERED:
@@ -59,7 +81,8 @@ export default (state, action) => {
         ...state,
         filtered: state.filtered.map((contact) =>
           contact.id === action.payload.id ? action.payload : contact
-        )
+        ),
+        loading: false
       }
     
     case FILTER_CONTACTS:
@@ -68,7 +91,8 @@ export default (state, action) => {
         filtered: state.contacts.filter(contact => {
           const regex = new RegExp(`${action.payload}`, 'gi');
           return contact.name.match(regex) || contact.email.match(regex);
-        })
+        }),
+        loading: false
       };
 
     case CLEAR_FILTER:
